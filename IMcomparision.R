@@ -39,7 +39,7 @@ failed = ggplot(datN, aes(x = Method.Name, y = (failed.percent*100),fill=datN$Me
          geom_boxplot(varwidth=TRUE,width=0.1, outlier.shape = 1, show.legend = FALSE,notch=TRUE) + 
          scale_fill_manual(values = c('turquoise','orange','pink')) +
          stat_summary(fun.y=mean, colour="darkred", geom="point",shape=18, size=3,show_guide = FALSE) +
-         geom_hline(yintercept=20,color='orangered') +
+         #geom_hline(yintercept=20,color='orangered') +
          coord_flip()
 
 means <- tapply(datN$false.percent,datN$Method.Name,mean)
@@ -48,7 +48,7 @@ false = ggplot(datN, aes(x = Method.Name, y = (false.percent*100),fill=datN$Meth
   geom_boxplot(varwidth=TRUE,width=0.1, outlier.shape = 1, show.legend = FALSE,notch=TRUE) + 
   scale_fill_manual(values = c('turquoise','orange','pink')) +
   stat_summary(fun.y=mean, colour="darkred", geom="point",shape=18, size=3,show_guide = FALSE) +
-  geom_hline(yintercept=20,color='orangered') +
+  #geom_hline(yintercept=20,color='orangered') +
   coord_flip()
 
 
@@ -56,11 +56,11 @@ false = ggplot(datN, aes(x = Method.Name, y = (false.percent*100),fill=datN$Meth
 xdensity <- ggplot(datN, aes(x = failed.percent*100, fill=datN$Method.Name)) + 
   labs(x="",y="") +
   geom_density(alpha=.5, show.legend = FALSE) + 
-  scale_fill_manual(values = c('turquoise','orange','pink')) + geom_vline(xintercept=20,color='orangered')
+  scale_fill_manual(values = c('turquoise','orange','pink')) #+ geom_vline(xintercept=20,color='orangered')
 ydensity <- ggplot(datN, aes(x = false.percent*100, fill=datN$Method.Name)) + 
   labs(x="",y="") +
   geom_density(alpha=.5, show.legend = FALSE) + 
-  scale_fill_manual(values = c('turquoise','orange','pink')) + geom_vline(xintercept=20,color='orangered')
+  scale_fill_manual(values = c('turquoise','orange','pink')) #+ geom_vline(xintercept=20,color='orangered')
 
 #arrange all graphs together
 #grid.arrange(xdensity, ydensity,failed,false, nrow = 2,heights = c(3, 2))
@@ -73,7 +73,7 @@ dev.off();
 
 # Error landscape
 png(filename="Figures/Fish_ErrorLandscape.png",width=720,height=480,units="px",pointsize = 16,res=150)
-ggplot(datN[datN$Method.Name == "Segmentation",], aes (x = failed.percent, y = false.percent,main="Fish", col=Method.Name,pch=Method.Name),geom='quasirandom') + 
+ggplot(datN[datN$Method.Name == "Segmentation" | datN$Method.Name == "NN",], aes (x = failed.percent, y = false.percent,main="Fish", col=Method.Name,pch=Method.Name),geom='quasirandom') + 
   labs(x="% failed detections",y="% false detections",color="",pch="") + ylim(c(0,1))+ xlim(c(0,1))+
   stat_density2d()+
   geom_point(data=datN[datN$Method.Name == "Subtraction",], aes (x = failed.percent, y = false.percent))
@@ -85,7 +85,7 @@ dev.off();
 
 
 ## For blackbuck
-datN=NA
+rm(datN)
 datN=dat[which(dat$Species=="Blackbuck"),]
 
 
@@ -97,7 +97,7 @@ failed = ggplot(datN, aes(x = Method.Name, y = (failed.percent*100),fill=datN$Me
   geom_boxplot(varwidth=TRUE,width=0.1, outlier.shape = 1, show.legend = FALSE,notch=TRUE) + 
   scale_fill_manual(values = c('turquoise','orange','pink')) +
   stat_summary(fun.y=mean, colour="darkred", geom="point",shape=18, size=3,show_guide = FALSE) +
-  geom_hline(yintercept=20,color='orangered') +
+  #geom_hline(yintercept=20,color='orangered') +
   coord_flip()
 
 means <- tapply(datN$false.percent,datN$Method.Name,mean)
@@ -106,7 +106,7 @@ false = ggplot(datN, aes(x = Method.Name, y = (false.percent*100),fill=datN$Meth
   geom_boxplot(varwidth=TRUE,width=0.1, outlier.shape = 1, show.legend = FALSE,notch=TRUE) + 
   scale_fill_manual(values = c('turquoise','orange','pink')) +
   stat_summary(fun.y=mean, colour="darkred", geom="point",shape=18, size=3,show_guide = FALSE) +
-  geom_hline(yintercept=20,color='orangered') +
+  #geom_hline(yintercept=20,color='orangered') +
   coord_flip()
 
 
@@ -114,11 +114,11 @@ false = ggplot(datN, aes(x = Method.Name, y = (false.percent*100),fill=datN$Meth
 xdensity <- ggplot(datN, aes(x = failed.percent*100, fill=datN$Method.Name)) + 
   labs(x="",y="") +
   geom_density(alpha=.5, show.legend = FALSE) + 
-  scale_fill_manual(values = c('turquoise','orange','pink')) + geom_vline(xintercept=20,color='orangered')
+  scale_fill_manual(values = c('turquoise','orange','pink')) #+ geom_vline(xintercept=20,color='orangered')
 ydensity <- ggplot(datN, aes(x = false.percent*100, fill=datN$Method.Name)) + 
   labs(x="",y="") +
   geom_density(alpha=.5, show.legend = FALSE) + 
-  scale_fill_manual(values = c('turquoise','orange','pink')) + geom_vline(xintercept=20,color='orangered')
+  scale_fill_manual(values = c('turquoise','orange','pink')) #+ geom_vline(xintercept=20,color='orangered')
 
 #arrange all graphs together
 #grid.arrange(xdensity, ydensity,failed,false, nrow = 2,heights = c(3, 2))
@@ -134,7 +134,7 @@ ggplot(datN, aes (x = failed.percent, y = false.percent,main="FBlackbuck", col=M
 dev.off();
 
 ## For Wasp
-datN=NA
+rm(datN)
 datN=dat[which(dat$Species=="Wasp"),]
 
 
@@ -146,7 +146,7 @@ failed = ggplot(datN, aes(x = Method.Name, y = (failed.percent*100),fill=datN$Me
   geom_boxplot(varwidth=TRUE,width=0.1, outlier.shape = 1, show.legend = FALSE,notch=TRUE) + 
   scale_fill_manual(values = c('turquoise','orange','pink')) +
   stat_summary(fun.y=mean, colour="darkred", geom="point",shape=18, size=3,show_guide = FALSE) +
-  geom_hline(yintercept=20,color='orangered') +
+  #geom_hline(yintercept=20,color='orangered') +
   coord_flip()
 
 means <- tapply(datN$false.percent,datN$Method.Name,mean)
@@ -155,7 +155,7 @@ false = ggplot(datN, aes(x = Method.Name, y = (false.percent*100),fill=datN$Meth
   geom_boxplot(varwidth=TRUE,width=0.1, outlier.shape = 1, show.legend = FALSE,notch=TRUE) + 
   scale_fill_manual(values = c('turquoise','orange','pink')) +
   stat_summary(fun.y=mean, colour="darkred", geom="point",shape=18, size=3,show_guide = FALSE) +
-  geom_hline(yintercept=20,color='orangered') +
+  #geom_hline(yintercept=20,color='orangered') +
   coord_flip()
 
 
@@ -163,11 +163,11 @@ false = ggplot(datN, aes(x = Method.Name, y = (false.percent*100),fill=datN$Meth
 xdensity <- ggplot(datN, aes(x = failed.percent*100, fill=datN$Method.Name)) + 
   labs(x="",y="") +
   geom_density(alpha=.5, show.legend = FALSE) + 
-  scale_fill_manual(values = c('turquoise','orange','pink')) + geom_vline(xintercept=20,color='orangered')
+  scale_fill_manual(values = c('turquoise','orange','pink')) #+ geom_vline(xintercept=20,color='orangered')
 ydensity <- ggplot(datN, aes(x = false.percent*100, fill=datN$Method.Name)) + 
   labs(x="",y="") +
   geom_density(alpha=.5, show.legend = FALSE) + 
-  scale_fill_manual(values = c('turquoise','orange','pink')) + geom_vline(xintercept=20,color='orangered')
+  scale_fill_manual(values = c('turquoise','orange','pink')) #+ geom_vline(xintercept=20,color='orangered')
 
 #arrange all graphs together
 #grid.arrange(xdensity, ydensity,failed,false, nrow = 2,heights = c(3, 2))
@@ -178,9 +178,10 @@ dev.off();
 
 # Error landscape
 png(filename="Figures/Wasp_ErrorLandscape.png",width=720,height=480,units="px",pointsize = 16,res=150)
-ggplot(datN, aes (x = failed.percent, y = false.percent,main="FBlackbuck", col=Method.Name,pch=Method.Name)) + 
-  stat_density_2d(aes( geom = "polygon")) + ylim(c(0,1))+xlim(c(0,1))+  labs(x="% failed detections",y="% false detections",color="",pch="")
-
+ggplot(datN[datN$Method.Name == "Segmentation" | datN$Method.Name == "Subtraction",], aes (x = failed.percent, y = false.percent,main="Fish", col=Method.Name,pch=Method.Name),geom='quasirandom') + 
+  labs(x="% failed detections",y="% false detections",color="",pch="") + ylim(c(0,1))+ xlim(c(0,1))+
+  stat_density2d()+
+  geom_point(data=datN[datN$Method.Name == "NN",], aes (x = failed.percent, y = false.percent))
 dev.off();
 
 
@@ -219,7 +220,7 @@ varMean["BBfalse","Seg"] = var(na.omit(lmean))
 
 par(mfrow=c(3,2))
 
-Fstat = varMean/avgVar
+Fstat = round(varMean/avgVar,digits=2)
 
 bb_seg1=boxplot(datN$failed.percent*100~datN$VideoName,ylab="% failed detections",xaxt="n",notch=TRUE,col="cyan",las=2,main=paste("Fstat = ",Fstat["BBfail","Seg"]))
 m <- tapply(X=datN$false.percent, INDEX=datN$VideoName, FUN = median)
@@ -257,7 +258,7 @@ avgVar["Ffalse","Seg"] = mean(na.omit(lvar))
 varMean["Ffalse","Seg"] = var(na.omit(lmean))
 
 
-Fstat = varMean/avgVar
+Fstat = round(varMean/avgVar,digits=2)
 
 fish_seg1=boxplot(datN$failed.percent*100~datN$VideoName,ylab="% failed detections",xaxt="n",notch=TRUE,col="pink",las=2,main=paste("Fstat = ",Fstat["Ffail","Seg"]))
 m <- tapply(X=datN$false.percent, INDEX=datN$VideoName, FUN = median)
@@ -267,7 +268,10 @@ fish_seg2=boxplot(datN$false.percent*100~datN$VideoName,ylab="% false detections
 par(xpd=TRUE)
 mtext("Fish", outer =F, cex = 0.5)
 
-datN=NA
+##Wasp
+
+
+rm(datN)
 datN=dat[which(dat$Species=="Wasp" & dat$Method.Name=="Segmentation"),]
 datN$VideoName=factor(datN$VideoName) #Remove undesired factors
 m <- tapply(X=datN$failed.percent, INDEX=datN$VideoName, FUN = median)
@@ -292,7 +296,7 @@ VMfalse = round(mean(na.omit(lvar)),2)
 avgVar["Wfalse","Seg"] = mean(na.omit(lvar))
 varMean["Wfalse","Seg"] = var(na.omit(lmean))
 
-Fstat = varMean/avgVar
+Fstat = round(varMean/avgVar,digits=2)
 
 wasp_seg1=boxplot(datN$failed.percent*100~datN$VideoName,ylab="% failed detections",xaxt="n",notch=TRUE,col="orange",las=2,main=paste("Fstat = ",Fstat["Wfail","Seg"]))
 m <- tapply(X=datN$false.percent, INDEX=datN$VideoName, FUN = median)
@@ -319,21 +323,21 @@ lvar=tapply(datN$failed.percent,datN$VideoName,var)
 lmean=as.numeric(paste(unlist(lmean)))
 lvar=as.numeric(paste(unlist(lvar)))
 VMfailed = round(mean(na.omit(lvar)),2)
-avgVar["BBfail","Seg"] = mean(na.omit(lvar))
-varMean["BBfail","Seg"] = var(na.omit(lmean))
+avgVar["BBfail","Sub"] = mean(na.omit(lvar))
+varMean["BBfail","Sub"] = var(na.omit(lmean))
 
 lmean=tapply(datN$false.percent,datN$VideoName,mean)
 lvar=tapply(datN$false.percent,datN$VideoName,var)
 lmean=as.numeric(paste(unlist(lmean)))
 lvar=as.numeric(paste(unlist(lvar)))
 VMfalse = round(mean(na.omit(lvar)),2)
-avgVar["BBfalse","Seg"] = mean(na.omit(lvar))
-varMean["BBfalse","Seg"] = var(na.omit(lmean))
+avgVar["BBfalse","Sub"] = mean(na.omit(lvar))
+varMean["BBfalse","Sub"] = var(na.omit(lmean))
 
 
 par(mfrow=c(3,2))
 
-Fstat = varMean/avgVar
+Fstat = round(varMean/avgVar,digits=2)
 
 bb_seg1=boxplot(datN$failed.percent*100~datN$VideoName,ylab="% failed detections",xaxt="n",notch=TRUE,col="cyan",las=2,main=paste("Fstat = ",Fstat["BBfail","Seg"]))
 m <- tapply(X=datN$false.percent, INDEX=datN$VideoName, FUN = median)
@@ -371,7 +375,7 @@ avgVar["Ffalse","Seg"] = mean(na.omit(lvar))
 varMean["Ffalse","Seg"] = var(na.omit(lmean))
 
 
-Fstat = varMean/avgVar
+Fstat = round(varMean/avgVar,digits=2)
 
 fish_seg1=boxplot(datN$failed.percent*100~datN$VideoName,ylab="% failed detections",xaxt="n",notch=TRUE,col="pink",las=2,main=paste("Fstat = ",Fstat["Ffail","Seg"]))
 m <- tapply(X=datN$false.percent, INDEX=datN$VideoName, FUN = median)
