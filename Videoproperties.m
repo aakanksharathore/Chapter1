@@ -79,7 +79,7 @@ imwrite(fr1,im2,'jpg');
  hold on;
  text(start_x,start_y,text_str, 'Color', 'r','FontSize',14);
  [coordx, coordy] = getpts;
- if length(coordx)!=0
+ if length(coordx) ~= 0
  [idx,d] = knnsearch([coordx,coordy],[coordx,coordy], 'k', 2);
  ANN(k,1)= j;
  ANN(k,2) = mean(d(:,2));
@@ -101,6 +101,7 @@ elseif keyP == 'c'
      [col,row] = ginput(1);
      rgb(l,1:3)=[abs(double(fr(round(row,0),round(col,0),1))-ir),abs(double(fr(round(row,0),round(col,0),2))-ig),abs(double(fr(round(row,0),round(col,0),3))-ib)];
      rgb(l,4)=j;
+     l=l+1;
 elseif keyP == 'q'
     break;
 %elseif keyP == 's'

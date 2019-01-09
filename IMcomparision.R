@@ -78,14 +78,16 @@ title <- ggdraw() +
 
 #grid.arrange(xdensity, ydensity,failed,false, nrow = 2,heights = c(3, 2))
 
-png(filename="Figures/Fish_techniques.png",width=1280,height=720,units="px",res=150)
+tiff(filename="Figures/Fish_techniques.tiff",width=1280,height=720,units="px",pointsize=16,res=150)
+pdf(file="Figures/Fish_techniques.pdf",width=7,height=4,pointsize=16)
 plot_grid(title, p, ncol = 1, rel_heights = c(0.1, 1)) # rel_heights values control title margins
 dev.off();
 
 
 
 # Error landscape
-png(filename="Figures/Fish_ErrorLandscape.png",width=720,height=480,units="px",pointsize = 16,res=150)
+png(filename="Figures/Fish_ErrorLandscape.png",width=1280,height=720,units="px",pointsize = 16,res=150)
+pdf(file="Figures/Fish_ErrorLandscape.pdf",width=7,height=4,pointsize=16)
 ggplot(datN[datN$Method.Name == "Segmentation" | datN$Method.Name == "NN",], aes (x = failed.percent, y = false.percent,main="Fish", col=Method.Name,pch=Method.Name),geom='quasirandom') + 
   labs(x="% failed detections",y="% false detections",color="",pch="") + ylim(c(0,1))+ xlim(c(0,1))+
   stat_density2d()+ggtitle("Fish")+
@@ -144,13 +146,15 @@ title <- ggdraw() +
 
 #grid.arrange(xdensity, ydensity,failed,false, nrow = 2,heights = c(3, 2))
 
-png(filename="Figures/BB_techniques.png",width=1280,height=720,units="px",res=150)
+png(filename="Figures/BB_techniques.png",width=1280,height=720,units="px",pointsize=16,res=150)
+pdf(file="Figures/BB_techniques.pdf",width=7,height=4,pointsize=16)
 plot_grid(title, p, ncol = 1, rel_heights = c(0.1, 1)) # rel_heights values control title margins
 dev.off();
 
 
 # Error landscape
-png(filename="Figures/BB_ErrorLandscape.png",width=720,height=480,units="px",pointsize = 16,res=150)
+png(filename="Figures/BB_ErrorLandscape.png",width=1280,height=720,units="px",pointsize = 16,res=150)
+pdf(file="Figures/BB_ErrorLandscape.pdf",width=7,height=4,pointsize=16)
 ggplot(datN, aes (x = failed.percent, y = false.percent,main="FBlackbuck", col=Method.Name,pch=Method.Name)) + 
   stat_density_2d(aes( geom = "polygon")) + ylim(c(0,1))+xlim(c(0,1))+ 
   ggtitle("Blackbuck")+labs(x="% failed detections",y="% false detections",color="",pch="")
@@ -204,13 +208,15 @@ title <- ggdraw() +
 
 #grid.arrange(xdensity, ydensity,failed,false, nrow = 2,heights = c(3, 2))
 
-png(filename="Figures/Wasp_techniques.png",width=1280,height=720,units="px",res=150)
+png(filename="Figures/Wasp_techniques.png",width=1280,height=720,units="px",pointsize=16,res=150)
+pdf(file="Figures/Wasp_techniques.pdf",width=7,height=4,pointsize=16)
 plot_grid(title, p, ncol = 1, rel_heights = c(0.1, 1)) # rel_heights values control title margins
 dev.off();
 
 
 # Error landscape
-png(filename="Figures/Wasp_ErrorLandscape.png",width=720,height=480,units="px",pointsize = 16,res=150)
+png(filename="Figures/Wasp_ErrorLandscape.png",width=1280,height=720,units="px",pointsize = 16,res=150)
+pdf(file="Figures/Wasp_ErrorLandscape.pdf",width=7,height=4,pointsize=16)
 ggplot(datN[datN$Method.Name == "Segmentation" | datN$Method.Name == "Subtraction",], aes (x = failed.percent, y = false.percent,main="Fish", col=Method.Name,pch=Method.Name),geom='quasirandom') + 
   labs(x="% failed detections",y="% false detections",color="",pch="") + ylim(c(0,1))+ xlim(c(0,1))+
   stat_density2d()+ggtitle("Wasp")+
@@ -251,17 +257,18 @@ avgVar["BBfalse","Seg"] = mean(na.omit(lvar))
 varMean["BBfalse","Seg"] = var(na.omit(lmean))
 
 
-par(mfrow=c(3,2))
-
+par(mfrow=c(2,3))
+layout(mat = matrix(c(1, 2,3, 4, 5,6),nrow = 2,ncol = 3))
 Fstat = round(varMean/avgVar,digits=2)
 
-bb_seg1=boxplot(datN$failed.percent*100~datN$VideoName,ylab="% failed detections",xaxt="n",notch=TRUE,col="cyan",las=2,main=paste("Fstat = ",Fstat["BBfail","Seg"]))
+bb_seg1=boxplot(datN$failed.percent*100~datN$VideoName,ylab="% failed detections",xaxt="n",notch=TRUE,col="cyan",las=2,main="Blackbuck",ylim=c(0,100))
+mtext(paste("Fstat = ",Fstat["BBfail","Seg"]), outer = F, cex = 0.8,side=4)
 m <- tapply(X=datN$false.percent, INDEX=datN$VideoName, FUN = median)
 o <- order(m, decreasing = TRUE)
 datN$VideoName=factor(datN$VideoName,levels=names(m)[o])
-bb_seg2=boxplot(datN$false.percent*100~datN$VideoName,ylab="% false detections",xaxt="n",notch=TRUE,col="cyan",las=2,main=paste("Fstat = ",Fstat["BBfalse","Seg"]))
+bb_seg2=boxplot(datN$false.percent*100~datN$VideoName,ylab="% false detections",xaxt="n",notch=TRUE,col="cyan",las=2,main="",ylim=c(0,100))
 par(xpd=TRUE)
-mtext("Blackbuck", outer = F, cex = 0.8,side=4)
+mtext(paste("Fstat = ",Fstat["BBfalse","Seg"]), outer = F, cex = 0.8,side=4)
 
 
 ##Fish
@@ -293,13 +300,14 @@ varMean["Ffalse","Seg"] = var(na.omit(lmean))
 
 Fstat = round(varMean/avgVar,digits=2)
 
-fish_seg1=boxplot(datN$failed.percent*100~datN$VideoName,ylab="% failed detections",xaxt="n",notch=TRUE,col="pink",las=2,main=paste("Fstat = ",Fstat["Ffail","Seg"]))
+fish_seg1=boxplot(datN$failed.percent*100~datN$VideoName,ylab="% failed detections",xaxt="n",notch=TRUE,col="pink",las=2,main="Fish",ylim=c(0,100))
+mtext(paste("Fstat = ",Fstat["Ffail","Seg"]), outer = F, cex = 0.8,side=4)
 m <- tapply(X=datN$false.percent, INDEX=datN$VideoName, FUN = median)
 o <- order(m, decreasing = TRUE)
 datN$VideoName=factor(datN$VideoName,levels=names(m)[o])
-fish_seg2=boxplot(datN$false.percent*100~datN$VideoName,ylab="% false detections",xaxt="n",notch=TRUE,col="pink",las=2,main=paste("Fstat = ",Fstat["Ffalse","Seg"]))
+fish_seg2=boxplot(datN$false.percent*100~datN$VideoName,ylab="% false detections",xaxt="n",notch=TRUE,col="pink",las=2,main="",ylim=c(0,100))
 par(xpd=TRUE)
-mtext("Fish", outer = F, cex = 0.8,side=4)
+mtext(paste("Fstat = ",Fstat["Ffalse","Seg"]), outer = F, cex = 0.8,side=4)
 
 ##Wasp
 
@@ -331,17 +339,19 @@ varMean["Wfalse","Seg"] = var(na.omit(lmean))
 
 Fstat = round(varMean/avgVar,digits=2)
 
-wasp_seg1=boxplot(datN$failed.percent*100~datN$VideoName,ylab="% failed detections",xaxt="n",notch=TRUE,col="orange",las=2,main=paste("Fstat = ",Fstat["Wfail","Seg"]))
+wasp_seg1=boxplot(datN$failed.percent*100~datN$VideoName,ylab="% failed detections",xaxt="n",notch=TRUE,col="orange",las=2,main="Wasp",ylim=c(0,100))
+mtext(paste("Fstat = ",Fstat["Wfail","Seg"]), outer = F, cex = 0.8,side=4)
 m <- tapply(X=datN$false.percent, INDEX=datN$VideoName, FUN = median)
 o <- order(m, decreasing = TRUE)
 datN$VideoName=factor(datN$VideoName,levels=names(m)[o])
-wasp_seg2=boxplot(datN$false.percent*100~datN$VideoName,ylab="% false detections",xaxt="n",notch=TRUE,col="orange",las=2,main=paste("Fstat = ",Fstat["Wfalse","Seg"]))
+wasp_seg2=boxplot(datN$false.percent*100~datN$VideoName,ylab="% false detections",xaxt="n",notch=TRUE,col="orange",las=2,main="",ylim=c(0,100))
 par(xpd=TRUE)
-mtext("Wasp", outer = F, cex = 0.8,side=4)
+mtext(paste("Fstat = ",Fstat["Wfalse","Seg"]), outer = F, cex = 0.8,side=4)
 
 #########################################################################################
 
 ##############################Subtraction#####################################
+
 ## For blackbuck
 rm(datN)
 datN<-dat[which(dat$Species=="Blackbuck" & dat$Method.Name=="Subtraction"),]
@@ -368,17 +378,18 @@ avgVar["BBfalse","Sub"] = mean(na.omit(lvar))
 varMean["BBfalse","Sub"] = var(na.omit(lmean))
 
 
-par(mfrow=c(3,2))
-
+#par(mfrow=c(2,3))
+layout(mat = matrix(c(1, 2,3, 4, 5,6),nrow = 2,ncol = 3))
 Fstat = round(varMean/avgVar,digits=2)
 
-bb_seg1=boxplot(datN$failed.percent*100~datN$VideoName,ylab="% failed detections",xaxt="n",notch=TRUE,col="cyan",las=2,main=paste("Fstat = ",Fstat["BBfail","Sub"]))
+bb_seg1=boxplot(datN$failed.percent*100~datN$VideoName,ylab="% failed detections",xaxt="n",notch=TRUE,col="cyan",las=2,main="Blackbuck",ylim=c(0,100))
+mtext(paste("Fstat = ",Fstat["BBfail","Sub"]), outer = F, cex = 0.8,side=4)
 m <- tapply(X=datN$false.percent, INDEX=datN$VideoName, FUN = median)
 o <- order(m, decreasing = TRUE)
 datN$VideoName=factor(datN$VideoName,levels=names(m)[o])
-bb_seg2=boxplot(datN$false.percent*100~datN$VideoName,ylab="% false detections",xaxt="n",notch=TRUE,col="cyan",las=2,main=paste("Fstat = ",Fstat["BBfalse","Sub"]))
+bb_seg2=boxplot(datN$false.percent*100~datN$VideoName,ylab="% false detections",xaxt="n",notch=TRUE,col="cyan",las=2,main="",ylim=c(0,100))
 par(xpd=TRUE)
-mtext("Blackbuck", outer = F, cex = 0.8,side=4)
+mtext(paste("Fstat = ",Fstat["BBfalse","Sub"]), outer = F, cex = 0.8,side=4)
 
 
 ##Fish
@@ -410,14 +421,18 @@ varMean["Ffalse","Sub"] = var(na.omit(lmean))
 
 Fstat = round(varMean/avgVar,digits=2)
 
-fish_seg1=boxplot(datN$failed.percent*100~datN$VideoName,ylab="% failed detections",xaxt="n",notch=TRUE,col="pink",las=2,main=paste("Fstat = ",Fstat["Ffail","Sub"]))
+fish_seg1=boxplot(datN$failed.percent*100~datN$VideoName,ylab="% failed detections",xaxt="n",notch=TRUE,col="pink",las=2,main="Fish",ylim=c(0,100))
+mtext(paste("Fstat = ",Fstat["Ffail","Sub"]), outer = F, cex = 0.8,side=4)
 m <- tapply(X=datN$false.percent, INDEX=datN$VideoName, FUN = median)
 o <- order(m, decreasing = TRUE)
 datN$VideoName=factor(datN$VideoName,levels=names(m)[o])
-fish_seg2=boxplot(datN$false.percent*100~datN$VideoName,ylab="% false detections",xaxt="n",notch=TRUE,col="pink",las=2,main=paste("Fstat = ",Fstat["Ffalse","Sub"]))
+fish_seg2=boxplot(datN$false.percent*100~datN$VideoName,ylab="% false detections",xaxt="n",notch=TRUE,col="pink",las=2,main="",ylim=c(0,100))
 par(xpd=TRUE)
-mtext("Fish", outer = F, cex = 0.8,side=4)
+mtext(paste("Fstat = ",Fstat["Ffalse","Sub"]), outer = F, cex = 0.8,side=4)
+
 ##Wasp
+
+
 rm(datN)
 datN=dat[which(dat$Species=="Wasp" & dat$Method.Name=="Subtraction"),]
 datN$VideoName=factor(datN$VideoName) #Remove undesired factors
@@ -443,17 +458,19 @@ VMfalse = round(mean(na.omit(lvar)),2)
 avgVar["Wfalse","Sub"] = mean(na.omit(lvar))
 varMean["Wfalse","Sub"] = var(na.omit(lmean))
 
-Fstat = varMean/avgVar
+Fstat = round(varMean/avgVar,digits=2)
 
-wasp_seg1=boxplot(datN$failed.percent*100~datN$VideoName,ylab="% failed detections",xaxt="n",notch=TRUE,col="orange",las=2,main=paste("Fstat = ",Fstat["Wfail","Sub"]))
+wasp_seg1=boxplot(datN$failed.percent*100~datN$VideoName,ylab="% failed detections",xaxt="n",notch=TRUE,col="orange",las=2,main="Wasp",ylim=c(0,100))
+mtext(paste("Fstat = ",Fstat["Wfail","Sub"]), outer = F, cex = 0.8,side=4)
 m <- tapply(X=datN$false.percent, INDEX=datN$VideoName, FUN = median)
 o <- order(m, decreasing = TRUE)
 datN$VideoName=factor(datN$VideoName,levels=names(m)[o])
-wasp_seg2=boxplot(datN$false.percent*100~datN$VideoName,ylab="% false detections",xaxt="n",notch=TRUE,col="orange",las=2,main=paste("Fstat = ",Fstat["Wfalse","Sub"]))
+wasp_seg2=boxplot(datN$false.percent*100~datN$VideoName,ylab="% false detections",xaxt="n",notch=TRUE,col="orange",las=2,main="",ylim=c(0,100))
 par(xpd=TRUE)
-mtext("Wasp", outer = F, cex = 0.8,side=4)
+mtext(paste("Fstat = ",Fstat["Wfalse","Sub"]), outer = F, cex = 0.8,side=4)
 
 ##############################   Neural Networks #####################################
+
 
 ## For blackbuck
 rm(datN)
@@ -481,17 +498,18 @@ avgVar["BBfalse","NN"] = mean(na.omit(lvar))
 varMean["BBfalse","NN"] = var(na.omit(lmean))
 
 
-par(mfrow=c(3,2))
-
+#par(mfrow=c(2,3))
+layout(mat = matrix(c(1, 2,3, 4, 5,6),nrow = 2,ncol = 3))
 Fstat = round(varMean/avgVar,digits=2)
 
-bb_seg1=boxplot(datN$failed.percent*100~datN$VideoName,ylab="% failed detections",xaxt="n",notch=TRUE,col="cyan",las=2,main=paste("Fstat = ",Fstat["BBfail","NN"]))
+bb_seg1=boxplot(datN$failed.percent*100~datN$VideoName,ylab="% failed detections",xaxt="n",notch=TRUE,col="cyan",las=2,main="Blackbuck",ylim=c(0,100))
+mtext(paste("Fstat = ",Fstat["BBfail","NN"]), outer = F, cex = 0.8,side=4)
 m <- tapply(X=datN$false.percent, INDEX=datN$VideoName, FUN = median)
 o <- order(m, decreasing = TRUE)
 datN$VideoName=factor(datN$VideoName,levels=names(m)[o])
-bb_seg2=boxplot(datN$false.percent*100~datN$VideoName,ylab="% false detections",xaxt="n",notch=TRUE,col="cyan",las=2,main=paste("Fstat = ",Fstat["BBfalse","NN"]))
+bb_seg2=boxplot(datN$false.percent*100~datN$VideoName,ylab="% false detections",xaxt="n",notch=TRUE,col="cyan",las=2,main="",ylim=c(0,100))
 par(xpd=TRUE)
-mtext("Blackbuck", outer = F, cex = 0.8,side=4)
+mtext(paste("Fstat = ",Fstat["BBfalse","NN"]), outer = F, cex = 0.8,side=4)
 
 
 ##Fish
@@ -523,15 +541,17 @@ varMean["Ffalse","NN"] = var(na.omit(lmean))
 
 Fstat = round(varMean/avgVar,digits=2)
 
-fish_seg1=boxplot(datN$failed.percent*100~datN$VideoName,ylab="% failed detections",xaxt="n",notch=TRUE,col="pink",las=2,main=paste("Fstat = ",Fstat["Ffail","NN"]))
+fish_seg1=boxplot(datN$failed.percent*100~datN$VideoName,ylab="% failed detections",xaxt="n",notch=TRUE,col="pink",las=2,main="Fish",ylim=c(0,100))
+mtext(paste("Fstat = ",Fstat["Ffail","NN"]), outer = F, cex = 0.8,side=4)
 m <- tapply(X=datN$false.percent, INDEX=datN$VideoName, FUN = median)
 o <- order(m, decreasing = TRUE)
 datN$VideoName=factor(datN$VideoName,levels=names(m)[o])
-fish_seg2=boxplot(datN$false.percent*100~datN$VideoName,ylab="% false detections",xaxt="n",notch=TRUE,col="pink",las=2,main=paste("Fstat = ",Fstat["Ffalse","NN"]))
+fish_seg2=boxplot(datN$false.percent*100~datN$VideoName,ylab="% false detections",xaxt="n",notch=TRUE,col="pink",las=2,main="",ylim=c(0,100))
 par(xpd=TRUE)
-mtext("Fish", outer = F, cex = 0.8,side=4)
+mtext(paste("Fstat = ",Fstat["Ffalse","NN"]), outer = F, cex = 0.8,side=4)
 
 ##Wasp
+
 
 rm(datN)
 datN=dat[which(dat$Species=="Wasp" & dat$Method.Name=="NN"),]
@@ -560,13 +580,16 @@ varMean["Wfalse","NN"] = var(na.omit(lmean))
 
 Fstat = round(varMean/avgVar,digits=2)
 
-wasp_seg1=boxplot(datN$failed.percent*100~datN$VideoName,ylab="% failed detections",xaxt="n",notch=TRUE,col="orange",las=2,main=paste("Fstat = ",Fstat["Wfail","NN"]))
+wasp_seg1=boxplot(datN$failed.percent*100~datN$VideoName,ylab="% failed detections",xaxt="n",notch=TRUE,col="orange",las=2,main="Wasp",ylim=c(0,100))
+mtext(paste("Fstat = ",Fstat["Wfail","NN"]), outer = F, cex = 0.8,side=4)
 m <- tapply(X=datN$false.percent, INDEX=datN$VideoName, FUN = median)
 o <- order(m, decreasing = TRUE)
 datN$VideoName=factor(datN$VideoName,levels=names(m)[o])
-wasp_seg2=boxplot(datN$false.percent*100~datN$VideoName,ylab="% false detections",xaxt="n",notch=TRUE,col="orange",las=2,main=paste("Fstat = ",Fstat["Wfalse","NN"]))
+wasp_seg2=boxplot(datN$false.percent*100~datN$VideoName,ylab="% false detections",xaxt="n",notch=TRUE,col="orange",las=2,main="",ylim=c(0,100))
 par(xpd=TRUE)
-mtext("Wasp", outer = F, cex = 0.8,side=4)
+mtext(paste("Fstat = ",Fstat["Wfalse","NN"]), outer = F, cex = 0.8,side=4)
+
+
 
 #############################################Relation with group and vidoe properties#################################
 
